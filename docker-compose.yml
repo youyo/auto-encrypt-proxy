@@ -1,0 +1,12 @@
+version: '3'
+services:
+  ngx-mruby-auto-encrypt-proxy:
+    build: .
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - redis
+  redis:
+    image: redis
+    container_name: redis
