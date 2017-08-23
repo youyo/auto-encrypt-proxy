@@ -1,10 +1,15 @@
 ssl = Nginx::SSL.new
 domain = ssl.servername
 redis = Redis.new 'redis', 6379
+endpoint = 'https://acme-v01.api.letsencrypt.org/'
+if ENV['STAGE'] =~ /^dev/
+  userdata.endpoint = 'https://acme-staging.api.letsencrypt.org/'
+end
+ttl = 5184000
 allow_domain = []
 
 acme = Nginx::SSL::ACME::Client.new(
-  userdata.endpoint,
+  endpoint,
   domain,
   redis,
   false,
@@ -21,7 +26,7 @@ if redis["#{domain}.crt"].nil? || redis["#{domain}.key"].nil?
     #{domain}_private_key
     #{domain}.key
     #{domain}.crt
-  ].each { |key| redis.expire key, userdata.ttl }
+  ].each { |key| redis.expire key, ttl }
 end
 
 ssl.certificate_data = redis["#{domain}.crt"]
