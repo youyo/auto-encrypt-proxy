@@ -2,7 +2,7 @@
 
 ## Required
 
-- redis
+- redis docker container
 
 ## Run
 
@@ -11,7 +11,6 @@
 Use public docker image, and use redis container.
 
 ```
-git pull youyo/auto-encrypt-proxy:latest
 docker container run -d --name redis redis:latest
 docker container run -d --link "redis:redis" -p 80:80 -p 443:443 youyo/auto-encrypt-proxy:latest
 ```
@@ -20,6 +19,7 @@ Use docker-compose.
 
 ```
 git clone https://github.com/youyo/auto-encrypt-proxy.git
+cd auto-encrypt-proxy/
 docker-compose up -d
 ```
 
@@ -29,11 +29,11 @@ Set data to redis.
 Set the key with the domain to which access is permitted as the key.
 
 ```
-docker container exec -it redis redis-cli set example.com 1
+docker container exec -it redis redis-cli lpush example.com 192.168.0.10 192.168.0.11 ...
 ```
 
 ### Access
 
 ```
-curl -v https://example.com/
+https://example.com/
 ```
