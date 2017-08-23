@@ -1,12 +1,14 @@
 version: '3'
 services:
-  ngx-mruby-auto-encrypt-proxy:
+  auto-encrypt-proxy:
     build: .
+    environment:
+      - STAGE=development
     ports:
       - "80:80"
       - "443:443"
     links:
       - redis
   redis:
-    image: redis
+    image: redis:latest
     container_name: redis
