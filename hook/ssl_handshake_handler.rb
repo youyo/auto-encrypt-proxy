@@ -2,9 +2,7 @@ ssl = Nginx::SSL.new
 domain = ssl.servername
 redis = Redis.new 'redis', 6379
 endpoint = 'https://acme-v01.api.letsencrypt.org/'
-if ENV['STAGE'] =~ /^dev/
-  userdata.endpoint = 'https://acme-staging.api.letsencrypt.org/'
-end
+endpoint = 'https://acme-staging.api.letsencrypt.org/' if ENV['STAGE'] =~ /^dev/
 ttl = 5184000
 allow_domain = []
 
