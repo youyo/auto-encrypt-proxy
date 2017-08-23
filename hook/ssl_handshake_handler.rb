@@ -1,12 +1,12 @@
 ssl = Nginx::SSL.new
 domain = ssl.servername
 redis = Redis.new 'redis', 6379
-### production endpoint
-# endpoint = 'https://acme-v01.api.letsencrypt.org/'
-### development endpoint
-endpoint = 'https://acme-staging.api.letsencrypt.org/'
+endpoint = 'https://acme-v01.api.letsencrypt.org/'
+endpoint = 'https://acme-staging.api.letsencrypt.org/' if ENV['STAGE'] =~ /^dev/
 ttl = 5184000
 allow_domain = []
+
+raise 'Domain not allowed.' unless redis.exists?(domain)
 
 acme = Nginx::SSL::ACME::Client.new(
   endpoint,
@@ -15,8 +15,6 @@ acme = Nginx::SSL::ACME::Client.new(
   false,
   allow_domain
 )
-
-raise 'not allowed servername' unless redis.exists?(domain)
 
 if redis["#{domain}.crt"].nil? || redis["#{domain}.key"].nil?
   acme.auto_cert_deploy
