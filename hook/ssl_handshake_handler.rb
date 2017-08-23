@@ -1,17 +1,21 @@
 ssl = Nginx::SSL.new
 domain = ssl.servername
-redis = Userdata.new.redis
+redis = Redis.new 'redis', 6379
+### production endpoint
+# endpoint = 'https://acme-v01.api.letsencrypt.org/'
+### development endpoint
+endpoint = 'https://acme-staging.api.letsencrypt.org/'
+ttl = 5184000
 allow_domain = []
 
 acme = Nginx::SSL::ACME::Client.new(
-  Userdata.new.endpoint,
+  endpoint,
   domain,
   redis,
   false,
   allow_domain
 )
 
-# raise 'not allowed servername' unless acme.allow_domain?
 raise 'not allowed servername' unless redis.exists?(domain)
 
 if redis["#{domain}.crt"].nil? || redis["#{domain}.key"].nil?
@@ -22,7 +26,7 @@ if redis["#{domain}.crt"].nil? || redis["#{domain}.key"].nil?
     #{domain}_private_key
     #{domain}.key
     #{domain}.crt
-  ].each { |key| redis.expire key, Userdata.new.ttl }
+  ].each { |key| redis.expire key, ttl }
 end
 
 ssl.certificate_data = redis["#{domain}.crt"]
