@@ -3,7 +3,7 @@ domain = ssl.servername
 redis = Redis.new 'redis', 6379
 endpoint = 'https://acme-v01.api.letsencrypt.org/'
 endpoint = 'https://acme-staging.api.letsencrypt.org/' if ENV['STAGE'] =~ /^dev/
-ttl = 5184000
+ttl = 6912000
 allow_domain = []
 
 raise 'Domain not allowed.' unless redis.exists?(domain)
@@ -21,7 +21,6 @@ if redis["#{domain}.crt"].nil? || redis["#{domain}.key"].nil?
   %W[
     #{domain}_authorization_uri
     #{domain}_token_value
-    #{domain}_private_key
     #{domain}.key
     #{domain}.crt
   ].each { |key| redis.expire key, ttl }
