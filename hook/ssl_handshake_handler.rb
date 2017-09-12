@@ -1,9 +1,9 @@
 ssl = Nginx::SSL.new
 domain = ssl.servername
-redis = Redis.new 'redis', 6379
+redis = Redis.new ENV['REDIS_HOST'], ENV['REDIS_PORT'].to_i
 endpoint = 'https://acme-v01.api.letsencrypt.org/'
 endpoint = 'https://acme-staging.api.letsencrypt.org/' if ENV['STAGE'] =~ /^dev/
-ttl = 6912000
+ttl = ENV['TTL']
 allow_domain = []
 
 raise 'Domain not allowed.' unless redis.exists?(domain)

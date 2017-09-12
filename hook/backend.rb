@@ -6,6 +6,6 @@ rescue
   '127.0.0.1:10080'
 end
 
-redis = Redis.new 'redis', 6379
+redis = Redis.new ENV['REDIS_HOST'], ENV['REDIS_PORT'].to_i
 domain = Nginx::Request.new.hostname
 return_backend_server(redis, domain)
