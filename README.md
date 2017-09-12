@@ -12,7 +12,7 @@ Use public docker image, and use redis container.
 
 ```
 docker container run -d --name redis redis:latest
-docker container run -d --link "redis:redis" -p 80:80 -p 443:443 youyo/auto-encrypt-proxy:latest
+docker container run -d --link "redis:redis" -e REDIS_HOST=redis -p 80:80 -p 443:443 youyo/auto-encrypt-proxy:latest
 ```
 
 Use docker-compose.
