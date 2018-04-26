@@ -13,5 +13,5 @@ end
 u = Userdata.new
 redis = Redis.new u.redis_host, u.redis_port
 domain = Nginx::Request.new.hostname
-Nginx.echo domain
+Nginx.log Nginx::LOG_ERR, "#{domain}"
 return_backend_server(redis, domain)
