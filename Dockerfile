@@ -1,4 +1,4 @@
-FROM youyo/ngx-mruby:1.20.0
+FROM youyo/ngx-mruby:1.20.2
 ENV REDIS_HOST 127.0.0.1
 ENV REDIS_PORT 6379
 ENV TTL 5184000
