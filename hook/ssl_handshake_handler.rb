@@ -47,6 +47,7 @@ end
 u = Userdata.new
 ssl = Nginx::SSL.new
 domain = ssl.servername
+Nginx.log Nginx::LOG_ERR, "#{domain}"
 redis = Redis.new u.redis_host, u.redis_port
 raise 'Domain not allowed.' if not_allowed_domain?(redis, domain)
 acme = initialize_acme_client(u.endpoint, domain, redis)
